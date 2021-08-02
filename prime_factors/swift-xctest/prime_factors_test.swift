@@ -10,9 +10,9 @@ class PrimeFactorsTest: XCTestCase {
 
 extension PrimeFactorsTest {
   static var allTests : [(String, (PrimeFactorsTest) -> () throws -> Void)] {
-    let name = "factor_2"
-    let fun = factor_2
-    return [ (name, fun), ]
+    return [ 
+      ("factor_2", factor_2), 
+    ]
   }
 }
 
