@@ -1,5 +1,6 @@
 import java.util.*;
-import org.junit.*;
+import org.junit.jupiter.api.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import static org.junit.Assert.*;
 import static org.assertj.core.api.Assertions.assertThat;

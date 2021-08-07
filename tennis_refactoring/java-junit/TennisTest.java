@@ -1,13 +1,13 @@
-import org.junit.runners.AllTests;
-import org.junit.runner.RunWith;
-import junit.framework.TestSuite;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import java.util.*;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Stream;
 
-@RunWith(AllTests.class)
-public class TennisTest extends TestCase {
-    public static TestSuite suite() {
+public class TennisTest {
+    private static Stream<Arguments> allCombinations() {
         Object[][] testData = new Object[][] {
             { 0, 0, "Love-All" },
             { 1, 1, "Fifteen-All" },
@@ -48,47 +48,38 @@ public class TennisTest extends TestCase {
             { 16, 14, "Win for player1"},
             { 14, 16, "Win for player2"},
         };
-        TestSuite suite = new TestSuite();
-        TennisGame game;
-    
+
+        List<Arguments> combinations = new ArrayList<Arguments>(testData.length * 3);
         for( int i=0; i< testData.length; i++ ) {
             int player1Score = (Integer)testData[i][0];
             int player2Score = (Integer)testData[i][1];
             String score = (String)testData[i][2];
             
-            game = new TennisGame1("player1", "player2");
-            suite.addTest( new TennisTest(game, player1Score, player2Score, score) );
-    
-            game = new TennisGame2("player1", "player2");
-            suite.addTest( new TennisTest(game, player1Score, player2Score, score) );
-    
-            game = new TennisGame3("player1", "player2");
-            suite.addTest( new TennisTest(game, player1Score, player2Score, score) );        
-        }
-        return suite;
-    }
+            combinations.add( Arguments.of(
+                new TennisGame1("player1", "player2"), player1Score, player2Score, score)
+            );
+            combinations.add( Arguments.of(
+                new TennisGame2("player1", "player2"), player1Score, player2Score, score)
+            );
+            combinations.add( Arguments.of(
+                new TennisGame3("player1", "player2"), player1Score, player2Score, score)
+            );
+        }    
+        return combinations.stream();
+    }    
 
-    private int player1Score;
-    private int player2Score;
-    private String expectedScore;
-    private TennisGame game;
-
-    public TennisTest(TennisGame game, int player1Score, int player2Score, String expectedScore) {
-        super(game.getClass().getName()+" should return "+expectedScore+" for "+player1Score+","+player2Score);
-        this.player1Score = player1Score;
-        this.player2Score = player2Score;
-        this.expectedScore = expectedScore;
-        this.game = game;
-    }
-    
-    protected void runTest() {
-        int highestScore = Math.max(this.player1Score, this.player2Score);
+    @ParameterizedTest
+    @MethodSource("allCombinations")
+    public void testScore(TennisGame game, int player1Score, int player2Score, String expectedScore) {
+        int highestScore = Math.max(player1Score, player2Score);
         for (int i = 0; i < highestScore; i++) {
-            if (i < this.player1Score)
+            if (i < player1Score) {
                 game.wonPoint("player1");
-            if (i < this.player2Score)
+            }
+            if (i < player2Score) {
                 game.wonPoint("player2");
+            }
         }
-        assertEquals(this.expectedScore, game.getScore());
+        assertEquals(expectedScore, game.getScore());
     }
 }
