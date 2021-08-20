@@ -314,6 +314,6 @@ class TennisTest: StringSpec() {
             if (i < player2Score)
                 game.wonPoint("player2")
         }
-        expectedScore.shouldBe(game.getScore())
+        game.getScore().shouldBe(expectedScore)
     }
 }
