@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 require 'rspec/core/rake_task'
 require 'bundler'
 
 Bundler.require
 
-Dir.glob("lib/*.rb").each do |file|
+Dir.glob('lib/*.rb').sort.each do |file|
   require_relative file
 end
 

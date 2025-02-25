@@ -35,7 +35,7 @@ end
 class EnterExercisePage
   include PageObject
 
-  button :enter, text: "Enter group exercise as new avatar"
+  button :enter, text: 'Enter group exercise as new avatar'
 end
 
 class Loader
@@ -48,7 +48,7 @@ class Loader
     on(PickCreateOrEnterPage).create_element.when_present.click
     on(PickProblemPage).skip_element.when_present.click
 
-    on(PickLanguagePage).pick_language "Java, JUnit"
+    on(PickLanguagePage).pick_language 'Java, JUnit'
     on(ConfirmPage).confirm_element.when_present.click
     on(EnterExercisePage).enter_element.when_present.click
     sleep 10
